@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300" role="img" aria-label="Cooling">
+<rect width="400" height="300" fill="#eef2f7"/>
+<path d="M0 270h400v30H0z" fill="#e2e8f0"/>
+<g fill="none" stroke="#0b2545" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+<rect x="110" y="80" width="170" height="140" rx="8"/>
+<path d="M135 98v104M160 98v104M185 98v104M210 98v104M235 98v104M258 98v104" stroke-width="5"/>
+<path d="M110 105H90v30h20"/>
+<path d="M315 70s-22 27-22 41a22 22 0 0 0 44 0c0-14-22-41-22-41z" stroke="#c2410c"/>
+</g>
+</svg>
