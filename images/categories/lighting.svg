@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300" role="img" aria-label="Lighting">
+<rect width="400" height="300" fill="#eef2f7"/>
+<path d="M0 270h400v30H0z" fill="#e2e8f0"/>
+<g fill="none" stroke="#0b2545" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+<path d="M100 120c0-25 18-40 45-40h60c32 0 50 18 50 48v24c0 30-18 48-50 48h-60c-27 0-45-15-45-40z"/>
+<circle cx="170" cy="150" r="30"/><circle cx="170" cy="150" r="10"/>
+<path d="M225 128h10M225 172h10"/>
+<path d="M280 110l45-12M285 150h48M280 190l45 12" stroke="#c2410c"/>
+</g>
+</svg>
