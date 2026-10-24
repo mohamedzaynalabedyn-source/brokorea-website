@@ -26,10 +26,14 @@ Tips:
   photos for free at https://squoosh.app (choose MozJPEG, quality around 75).
 - Only use photos you took yourself or have the rights to. Don't use photos with car brand logos.
 
-Other files in this folder (you can leave these as they are):
-- `og-image.png` is the preview picture shown when someone shares a link on WhatsApp,
-  Facebook and similar apps. To replace it, use a 1200 × 630 px PNG with the same name.
-- `logo.svg` / `logo.png` are the text logo. `apple-touch-icon.png` is the phone home-screen icon.
+Logo and icons (these come from the BRO KOREA logo pack; follow BRAND.md in the pack):
+- `images/logo.svg` is the header logo. `images/logo-white.svg` is the footer logo on navy.
+  `images/logo.png` is used by Google.
+- In the main folder: `og-image.png` is the preview picture shown when a link is shared on
+  WhatsApp, Facebook and similar apps (1200 × 630 px). `favicon.ico`, `favicon.svg`,
+  `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png` and
+  `site.webmanifest` are the browser and phone icons.
+- To update any of them, upload the new file with the same name.
 
 How to upload on GitHub: open the folder on github.com → **Add file** → **Upload files** →
 drag the photo in → **Commit changes**. The site updates within a few minutes.

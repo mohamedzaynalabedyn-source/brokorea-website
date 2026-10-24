@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300" role="img" aria-label="Electrical &amp; sensors">
 <rect width="400" height="300" fill="#eef2f7"/>
 <path d="M0 270h400v30H0z" fill="#e2e8f0"/>
-<g fill="none" stroke="#0b2545" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+<g fill="none" stroke="#1F2D44" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
 <rect x="140" y="90" width="120" height="120" rx="12"/>
 <path d="M120 115h20M120 150h20M120 185h20M260 115h20M260 150h20M260 185h20M165 70v20M200 70v20M235 70v20M165 210v20M200 210v20M235 210v20"/>
-<path d="M212 112l-34 44h24l-12 34 36-48h-25z" fill="#c2410c" stroke="#c2410c" stroke-width="4"/>
+<path d="M212 112l-34 44h24l-12 34 36-48h-25z" fill="#CD2E3A" stroke="#CD2E3A" stroke-width="4"/>
 </g>
 </svg>
