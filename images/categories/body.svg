@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300" role="img" aria-label="Body parts">
 <rect width="400" height="300" fill="#eef2f7"/>
 <path d="M0 270h400v30H0z" fill="#e2e8f0"/>
-<g fill="none" stroke="#0b2545" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+<g fill="none" stroke="#1F2D44" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
 <path d="M60 195v-28c0-14 8-20 20-22l52-10 42-38c7-6 14-8 24-8h78c10 0 17 3 24 10l34 36 34 7c14 3 22 10 22 25v28z"/>
 <path d="M150 135l34-31h42v31z"/><path d="M244 104h30c5 0 8 2 11 5l25 26h-66z"/>
 <circle cx="125" cy="200" r="26" fill="#eef2f7"/><circle cx="125" cy="200" r="9"/>
 <circle cx="285" cy="200" r="26" fill="#eef2f7"/><circle cx="285" cy="200" r="9"/>
-<path d="M238 140v45" stroke="#c2410c"/>
+<path d="M238 140v45" stroke="#CD2E3A"/>
 </g>
 </svg>
