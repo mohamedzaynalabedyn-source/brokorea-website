@@ -97,6 +97,7 @@
 
     var data = {};
     new FormData(form).forEach(function (v, k) { if (k !== "botcheck" && k !== "redirect") data[k] = v; });
+    if (!data.email) delete data.email; // email is optional; buyers can be answered on WhatsApp
 
     submit.disabled = true;
     show(form.dataset.msgSending, true);
