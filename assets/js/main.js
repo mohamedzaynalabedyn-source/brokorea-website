@@ -25,6 +25,12 @@
   var params = new URLSearchParams(location.search);
 
   // Pre-fill from links like quote.html?category=brakes or quote.html?make=Kia
+  // quote.html?type=vehicle|parts|support pre-selects "What do you need?"
+  var type = params.get("type");
+  if (type) {
+    var typeOpt = form.querySelector('#f-type option[data-slug="' + type.replace(/[^a-z-]/g, "") + '"]');
+    if (typeOpt) typeOpt.selected = true;
+  }
   var cat = params.get("category");
   if (cat) {
     var opt = form.querySelector('#f-category option[data-slug="' + cat.replace(/[^a-z-]/g, "") + '"]');
@@ -40,7 +46,7 @@
 
   function summary(intro) {
     var lines = [intro, ""];
-    var fields = [["Name", "name"], ["Company", "Company"], ["Country", "Country"],
+    var fields = [["Request", "Request type"], ["Name", "name"], ["Company", "Company"], ["Country", "Country"],
       ["Category", "Category"], ["Car", null], ["VIN", "VIN / chassis"]];
     fields.forEach(function (f) {
       var v = f[1] ? val(f[1]) : [val("Car make"), val("Model"), val("Year")].filter(Boolean).join(" ");
