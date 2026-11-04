@@ -1,15 +1,17 @@
 /* BRO KOREA — animated logo in the homepage hero (needs vendor/gsap.min.js).
  *
  * BRO and the flag never move. One timeline, ≈ 1.35 s, then the logo holds still:
- *   0.00 – 1.05  The roofline curve draws along its own path. Its centre-line stroke
- *                (.swoosh-draw inside a mask) moves stroke-dashoffset to 0, revealing the
- *                filled, tapered shape; ease power2.inOut starts gently, runs confidently
- *                through the middle and settles into place.
- *   0.45 – 1.15  The shorter lower curve draws the same way, finishing at the nose.
+ *   0.00 – 1.05  The roofline curve draws along its own path (ease power1.inOut: gentle start,
+ *                confident middle, smooth settle). Visible from ≈ 0.15 s.
+ *   0.58 – 1.10  The shorter lower curve follows, starting as the roofline passes above it.
  *   0.70 – 1.35  KOREA fades in, overlapping the end of the drawing.
  *
- * The filled shapes never change; only their masks are drawn. The motion is the same on
- * English and Arabic pages and the logo is never mirrored.
+ * Each red shape is a fixed filled silhouette inside a mask. The mask holds several strokes
+ * (<use class="swoosh-draw">) along the shape's centre line: a full-width one, plus narrower
+ * round-ended ones whose dash is longer by `data-lead`, so they run just ahead of it. All of a
+ * curve's strokes share one stroke-dashoffset tween, so the moving front is a rounded taper and
+ * the reveal never leaves the silhouette. The motion is identical on English and Arabic pages;
+ * the logo is never mirrored.
  */
 (function () {
   "use strict";
@@ -22,22 +24,25 @@
   function release() { root.classList.remove("logo-anim-pending"); }
   if (!window.gsap) { release(); return; }
 
-  var draws = svg.querySelectorAll(".swoosh-draw");   // [roofline mask stroke, lower curve mask stroke]
+  var draws = Array.prototype.slice.call(svg.querySelectorAll(".swoosh-draw"));
+  var curve = function (n) { return draws.filter(function (u) { return u.getAttribute("data-curve") === String(n); }); };
   var korea = svg.querySelector(".korea");
   var replay = document.querySelector(".logo-replay");
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // Start state: both curves undrawn, KOREA transparent.
-  Array.prototype.forEach.call(draws, function (path) {
-    var length = path.getTotalLength();
-    gsap.set(path, { strokeDasharray: length + " " + length, strokeDashoffset: length });
+  draws.forEach(function (use) {
+    var line = svg.querySelector(use.getAttribute("href"));
+    var length = line.getTotalLength();
+    var lead = parseFloat(use.getAttribute("data-lead")) || 0;
+    gsap.set(use, { strokeDasharray: (length + lead) + " " + (2 * length), strokeDashoffset: length });
   });
   gsap.set(korea, { opacity: 0 });
   release();   // GSAP controls the state from here
 
   var tl = gsap.timeline({ paused: true })
-    .to(draws[0], { strokeDashoffset: 0, duration: 1.05, ease: "power2.inOut" }, 0)
-    .to(draws[1], { strokeDashoffset: 0, duration: 0.7, ease: "power2.inOut" }, 0.45)
+    .to(curve(1), { strokeDashoffset: 0, duration: 1.05, ease: "power1.inOut" }, 0)
+    .to(curve(2), { strokeDashoffset: 0, duration: 0.52, ease: "power1.inOut" }, 0.58)
     .to(korea, { opacity: 1, duration: 0.65, ease: "power1.out" }, 0.7);
 
   if (reduceMotion) {
