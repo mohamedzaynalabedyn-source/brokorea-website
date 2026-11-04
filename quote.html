@@ -20,14 +20,12 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="ar_AR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#1F2D44">
+<meta name="theme-color" content="#ffffff">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap">
+<link rel="preload" href="assets/fonts/noto-sans-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/style.css">
 
 </head>
@@ -41,8 +39,8 @@
     </nav>
     <div class="header-actions">
       <a class="lang-switch" href="ar/quote.html" hreflang="ar" lang="ar">العربية</a>
-      <a class="btn btn-accent btn-sm" href="quote.html"><span class="hide-xs">Request a Quote</span><span class="show-xs">Get a Quote</span></a>
-      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav"><span class="bars" aria-hidden="true"></span><span class="sr-only">Menu</span></button>
+      <a class="btn btn-primary btn-sm" href="quote.html"><span class="hide-xs">Request a Quote</span><span class="show-xs">Get a Quote</span></a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" data-label-open="Open menu" data-label-close="Close menu"><span class="bars" aria-hidden="true"></span><span class="sr-only">Open menu</span></button>
     </div>
   </div>
 </header>
@@ -50,9 +48,11 @@
 <section class="page-head"><div class="wrap"><h1>Request a quote</h1><p class="lead">Tell us what you need from Korea: vehicles, automotive parts or trading support. The more detail you give, the faster and more accurate our quotation.</p></div></section>
 <section class="section">
   <div class="wrap quote-layout">
-    <form id="quote-form" class="quote-form" action="https://api.web3forms.com/submit" method="POST"
+    <form id="quote-form" class="quote-form" action="https://api.web3forms.com/submit" method="POST" novalidate
       data-thanks="thank-you.html" data-lang="en"
-      data-msg-sending="Sending…" data-msg-error="Sorry, your request could not be sent. Please email your list to info@brokorea.com or message us on WhatsApp." data-msg-config="The online form is not active yet. Please email your list to info@brokorea.com or message us on WhatsApp.">
+      data-msg-sending="Sending…" data-msg-error="Sorry, your request could not be sent. Please email your list to info@brokorea.com or message us on WhatsApp." data-msg-config="The online form is not active yet. Please email your list to info@brokorea.com or message us on WhatsApp."
+      data-err-required="Please fill in this field." data-err-reach="Add a WhatsApp number or an email address so we can reply."
+      data-err-email="Check the email address, for example name@company.com." data-err-vehicle="Add the VIN, or the make, model and year.">
       <input type="hidden" name="access_key" value="">
       <input type="hidden" name="subject" value="New quote request – brokorea.com">
       <input type="hidden" name="from_name" value="BRO KOREA website">
@@ -60,44 +60,59 @@
       <input type="hidden" name="redirect" value="https://brokorea.com/thank-you.html">
       <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
 
-      <fieldset>
+      <fieldset class="fs">
+        <legend>Your request</legend>
+        <label class="field"><span class="field-l">What do you need?</span><select name="Request type" id="f-type"><option value="Automotive parts" data-slug="parts">Automotive parts</option><option value="Vehicle" data-slug="vehicle">Vehicle</option><option value="Trading &amp; export support" data-slug="support">Trading &amp; export support</option></select></label>
+        <fieldset class="choice" id="f-path">
+          <legend class="field-l">Do you have part numbers?</legend>
+          <label class="choice-opt"><input type="radio" name="Part numbers" value="Yes, part numbers included" data-path="parts" checked><span>Yes, I have part numbers</span></label>
+          <label class="choice-opt"><input type="radio" name="Part numbers" value="No, help identify the parts" data-path="identify"><span>No, help me identify the parts</span></label>
+        </fieldset>
+        <label class="field" id="f-cat-field"><span class="field-l">Parts category (for parts)</span><select name="Category" id="f-category"><option value="Mixed / several categories">Mixed / several categories</option><option value="Engine parts" data-slug="engine">Engine parts</option><option value="Ignition &amp; spark plugs" data-slug="ignition">Ignition &amp; spark plugs</option><option value="Filters" data-slug="filters">Filters</option><option value="Brakes" data-slug="brakes">Brakes</option><option value="Suspension &amp; steering" data-slug="suspension">Suspension &amp; steering</option><option value="Electrical &amp; sensors" data-slug="electrical">Electrical &amp; sensors</option><option value="Cooling" data-slug="cooling">Cooling</option><option value="Lighting" data-slug="lighting">Lighting</option><option value="Body parts" data-slug="body">Body parts</option><option value="Transmission" data-slug="transmission">Transmission</option><option value="Smart keys &amp; remotes" data-slug="keys">Smart keys &amp; remotes</option></select></label>
+        <label class="field" id="f-list-field" data-modes="{&quot;parts&quot;: [&quot;Part numbers &amp; quantities&quot;, &quot;One part per line: part number, then quantity. You can paste straight from Excel.&quot;, &quot;58101-XXXXX  x 20\n26300-XXXXX  x 100\nNGK spark plug (engine code G4FC)  x 400&quot;], &quot;identify&quot;: [&quot;Describe the parts you need&quot;, &quot;What each part is, where it fits on the vehicle, and the quantity. Add a part number if you know it.&quot;, &quot;e.g. Front brake pads – 1 set\nLeft headlamp – 1 piece&quot;], &quot;vehicle&quot;: [&quot;Vehicle details&quot;, &quot;Make, model, year and the specifications you are looking for.&quot;, &quot;e.g. Kia Sportage, 2021, diesel, automatic&quot;], &quot;support&quot;: [&quot;Your requirements&quot;, &quot;What you need help with: sourcing, supplier communication, ordering, packaging, documents or shipping.&quot;, &quot;e.g. Find a supplier, check the packaging and prepare the shipping documents&quot;]}">
+          <span class="field-l"><span id="f-list-label">Part numbers, vehicle details or requirements</span> <span class="req" aria-hidden="true">*</span></span>
+          <textarea name="Parts list" id="f-parts" rows="8" required dir="auto" placeholder="58101-XXXXX  x 20
+26300-XXXXX  x 100
+NGK spark plug (engine code G4FC)  x 400" aria-describedby="f-list-help"></textarea>
+          <small id="f-list-help">For parts: one per line, part number then quantity (you can paste from Excel). For vehicles: make, model, year and specifications.</small>
+        </label>
+        <p class="photo-note" id="f-photos" hidden><svg class="i i-camera" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Photos help us identify parts. After sending this form, send photos of the part, its label or the vehicle registration document on WhatsApp or to info@brokorea.com, and mention your name.</span></p>
+        <label class="field"><span class="field-l">Notes</span><textarea name="Notes" rows="3" dir="auto" placeholder="Genuine or aftermarket, delivery city or port, deadline…"></textarea></label>
+      </fieldset>
+
+      <fieldset class="fs" id="f-vehicle">
+        <legend><span id="f-vehicle-opt">Vehicle (optional)</span><span id="f-vehicle-req" hidden>Vehicle <span class="req" aria-hidden="true">*</span></span></legend>
+        <p class="field-note" id="f-vehicle-hint" hidden>Add the VIN, or the make, model and year.</p>
+        <div class="grid-2">
+          <label class="field"><span class="field-l">Car make</span><input name="Car make" list="makes" autocomplete="off"></label>
+          <label class="field"><span class="field-l">Model</span><input name="Model" placeholder="e.g. Tucson"></label>
+          <label class="field"><span class="field-l">Year</span><input name="Year" inputmode="numeric" maxlength="4" dir="ltr" placeholder="e.g. 2019"></label>
+          <label class="field"><span class="field-l">VIN / chassis number</span><input name="VIN / chassis" dir="ltr" maxlength="20" autocapitalize="characters" placeholder="17 characters, e.g. KMH…"></label>
+        </div>
+        <p class="field-error" id="f-vehicle-error" hidden></p>
+        <datalist id="makes"><option value="Hyundai"><option value="Kia"><option value="Genesis"><option value="Chevrolet"><option value="Daewoo"><option value="KG Mobility (SsangYong)"><option value="Renault Korea"><option value="Mercedes-Benz"><option value="BMW"><option value="Tesla"></datalist>
+      </fieldset>
+
+      <fieldset class="fs">
         <legend>Your details</legend>
         <div class="grid-2">
-          <label><span>Your name <span class="req" aria-hidden="true">*</span></span><input name="name" required autocomplete="name"></label>
-          <label><span>Company</span><input name="Company" autocomplete="organization"></label>
-          <label><span>Country <span class="req" aria-hidden="true">*</span></span><input name="Country" list="countries" required autocomplete="country-name"></label>
-          <label><span>WhatsApp number <span class="req" aria-hidden="true">*</span></span><input name="WhatsApp" type="tel" dir="ltr" required autocomplete="tel" placeholder="+ country code and number"></label>
-          <label class="span-2"><span>Email (optional)</span><input name="email" type="email" dir="ltr" autocomplete="email" placeholder="you@company.com"></label>
+          <label class="field"><span class="field-l">Your name <span class="req" aria-hidden="true">*</span></span><input name="name" required autocomplete="name"></label>
+          <label class="field"><span class="field-l">Company</span><input name="Company" autocomplete="organization"></label>
+          <label class="field span-2"><span class="field-l">Country <span class="req" aria-hidden="true">*</span></span><input name="Country" list="countries" required autocomplete="country-name"></label>
+        </div>
+        <div class="reach" id="f-reach">
+          <p class="field-note" id="f-reach-note"><span class="req" aria-hidden="true">*</span> WhatsApp or email: add at least one so we can reply.</p>
+          <div class="grid-2">
+            <label class="field"><span class="field-l">WhatsApp number</span><input name="WhatsApp" type="tel" dir="ltr" autocomplete="tel" placeholder="+ country code and number" aria-describedby="f-reach-note"></label>
+            <label class="field"><span class="field-l">Email</span><input name="email" type="email" dir="ltr" autocomplete="email" placeholder="you@company.com" aria-describedby="f-reach-note"></label>
+          </div>
+          <p class="field-error" id="f-reach-error" hidden></p>
         </div>
         <datalist id="countries"><option value="Iraq"><option value="United Arab Emirates"><option value="Saudi Arabia"><option value="Kuwait"><option value="Oman"><option value="Qatar"><option value="Bahrain"><option value="Jordan"><option value="Lebanon"><option value="Syria"><option value="Yemen"><option value="Libya"><option value="Egypt"></datalist>
       </fieldset>
 
-      <fieldset>
-        <legend>Vehicle (optional)</legend>
-        <div class="grid-2">
-          <label><span>Car make</span><input name="Car make" list="makes"></label>
-          <label><span>Model</span><input name="Model" placeholder="e.g. Tucson"></label>
-          <label><span>Year</span><input name="Year" inputmode="numeric" maxlength="4" placeholder="e.g. 2019"></label>
-          <label><span>VIN / chassis number</span><input name="VIN / chassis" dir="ltr" maxlength="20" autocapitalize="characters" placeholder="17 characters, e.g. KMH…"></label>
-        </div>
-        <datalist id="makes"><option value="Hyundai"><option value="Kia"><option value="Genesis"><option value="Chevrolet"><option value="Daewoo"><option value="KG Mobility (SsangYong)"><option value="Renault Korea"><option value="Mercedes-Benz"><option value="BMW"><option value="Tesla"></datalist>
-      </fieldset>
-
-      <fieldset>
-        <legend>Your request</legend>
-        <label><span>What do you need?</span><select name="Request type" id="f-type"><option value="Automotive parts" data-slug="parts">Automotive parts</option><option value="Vehicle" data-slug="vehicle">Vehicle</option><option value="Trading &amp; export support" data-slug="support">Trading &amp; export support</option></select></label>
-        <label><span>Parts category (for parts)</span><select name="Category" id="f-category"><option value="Mixed / several categories">Mixed / several categories</option><option value="Engine parts" data-slug="engine">Engine parts</option><option value="Ignition &amp; spark plugs" data-slug="ignition">Ignition &amp; spark plugs</option><option value="Filters" data-slug="filters">Filters</option><option value="Brakes" data-slug="brakes">Brakes</option><option value="Suspension &amp; steering" data-slug="suspension">Suspension &amp; steering</option><option value="Electrical &amp; sensors" data-slug="electrical">Electrical &amp; sensors</option><option value="Cooling" data-slug="cooling">Cooling</option><option value="Lighting" data-slug="lighting">Lighting</option><option value="Body parts" data-slug="body">Body parts</option><option value="Transmission" data-slug="transmission">Transmission</option><option value="Smart keys &amp; remotes" data-slug="keys">Smart keys &amp; remotes</option></select>
-        </label>
-        <label><span>Part numbers, vehicle details or requirements <span class="req" aria-hidden="true">*</span></span><textarea name="Parts list" id="f-parts" rows="9" required dir="auto" placeholder="58101-XXXXX  x 20
-26300-XXXXX  x 100
-NGK spark plug (engine code G4FC)  x 400"></textarea>
-          <small>For parts: one per line, part number then quantity (you can paste from Excel). For vehicles: make, model, year and specifications.</small>
-        </label>
-        <label><span>Notes</span><textarea name="Notes" rows="3" placeholder="Genuine or aftermarket, delivery city or port, deadline…"></textarea></label>
-      </fieldset>
-
       <div class="form-foot">
-        <button class="btn btn-accent btn-lg" type="submit">Send quote request</button>
+        <button class="btn btn-primary btn-lg" type="submit">Send quote request</button>
         <p class="muted small"><span class="req" aria-hidden="true">*</span> Required · We only use your details to reply to your request.</p>
       </div>
       <p class="form-status" role="status" aria-live="polite" hidden></p>
@@ -105,9 +120,9 @@ NGK spark plug (engine code G4FC)  x 400"></textarea>
 
     <aside class="quote-side">
       <div class="side-box">
-        <h2><svg class="i i-file" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg> Have an Excel or PDF list?</h2>
+        <h2><svg class="i i-file" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg> Have a file or photos?</h2>
         <p>To send an Excel or PDF list, or photos, email them to info@brokorea.com. The subject line is filled in for you.</p>
-        <a class="btn btn-navy btn-block" id="mail-list" href="mailto:info@brokorea.com?subject=Quote%20request%20%E2%80%93%20parts%20list%20attached%20%28Excel/PDF%29&body=Hello%20BRO%20KOREA%2C%0A%0APlease%20find%20my%20parts%20list%20attached.%0A%0AName%3A%0ACompany%3A%0ACountry%3A%0AWhatsApp%3A%0A%0AThank%20you."
+        <a class="btn btn-outline btn-block" id="mail-list" href="mailto:info@brokorea.com?subject=Quote%20request%20%E2%80%93%20parts%20list%20attached%20%28Excel/PDF%29&body=Hello%20BRO%20KOREA%2C%0A%0APlease%20find%20my%20parts%20list%20attached.%0A%0AName%3A%0ACompany%3A%0ACountry%3A%0AWhatsApp%3A%0A%0AThank%20you."
            data-subject="Quote request – parts list attached (Excel/PDF)" data-body="Hello BRO KOREA,
 
 Please find my parts list attached.
@@ -124,7 +139,7 @@ Thank you."><svg class="i i-mail" viewBox="0 0 24 24" width="24" height="24" fil
         <h2><svg class="i i-wa" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z"/><path fill="currentColor" stroke="none" d="M9 7.8c.3-.1.6 0 .7.3l.8 1.8c.1.3 0 .5-.2.7l-.6.6c.5 1.1 1.5 2.1 2.6 2.6l.6-.6c.2-.2.5-.3.7-.2l1.8.8c.3.1.4.4.3.7-.3 1-1.2 1.6-2.2 1.5-3.2-.4-5.6-2.8-6-6-.1-1 .5-1.9 1.5-2.2z"/></svg> Prefer WhatsApp?</h2>
         <p>Send the details you typed in the form straight to our WhatsApp.</p>
         <a class="btn btn-wa btn-block" id="wa-send" href="https://wa.me/821039491286?text=Hello%20BRO%20KOREA%2C%20I%20would%20like%20to%20discuss%20a%20request%20from%20Korea." target="_blank" rel="noopener"
-           data-intro="Hello BRO KOREA, I would like to discuss a request from Korea."><svg class="i i-wa" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z"/><path fill="currentColor" stroke="none" d="M9 7.8c.3-.1.6 0 .7.3l.8 1.8c.1.3 0 .5-.2.7l-.6.6c.5 1.1 1.5 2.1 2.6 2.6l.6-.6c.2-.2.5-.3.7-.2l1.8.8c.3.1.4.4.3.7-.3 1-1.2 1.6-2.2 1.5-3.2-.4-5.6-2.8-6-6-.1-1 .5-1.9 1.5-2.2z"/></svg> Send this list on WhatsApp</a>
+           data-intro="Hello BRO KOREA, I would like to discuss a request from Korea." data-labels="{&quot;request&quot;: &quot;Request type&quot;, &quot;path&quot;: &quot;Part numbers&quot;, &quot;name&quot;: &quot;Name&quot;, &quot;company&quot;: &quot;Company&quot;, &quot;country&quot;: &quot;Country&quot;, &quot;email&quot;: &quot;Email&quot;, &quot;category&quot;: &quot;Category&quot;, &quot;vehicle&quot;: &quot;Vehicle&quot;, &quot;vin&quot;: &quot;VIN&quot;, &quot;parts&quot;: &quot;Parts&quot;, &quot;details&quot;: &quot;Details&quot;, &quot;notes&quot;: &quot;Notes&quot;}"><svg class="i i-wa" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z"/><path fill="currentColor" stroke="none" d="M9 7.8c.3-.1.6 0 .7.3l.8 1.8c.1.3 0 .5-.2.7l-.6.6c.5 1.1 1.5 2.1 2.6 2.6l.6-.6c.2-.2.5-.3.7-.2l1.8.8c.3.1.4.4.3.7-.3 1-1.2 1.6-2.2 1.5-3.2-.4-5.6-2.8-6-6-.1-1 .5-1.9 1.5-2.2z"/></svg> Send this list on WhatsApp</a>
         <p class="small center"><span dir="ltr">+82 10-3949-1286</span></p>
       </div>
     </aside>
@@ -154,7 +169,6 @@ Thank you."><svg class="i i-mail" viewBox="0 0 24 24" width="24" height="24" fil
   </div>
   <div class="wrap foot-bottom">© <span data-year>2026</span> BRO KOREA. All rights reserved.</div>
 </footer>
-<a class="wa-float" href="https://wa.me/821039491286?text=Hello%20BRO%20KOREA%2C%20I%20would%20like%20to%20discuss%20a%20request%20from%20Korea." target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp"><svg class="i i-wa" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z"/><path fill="currentColor" stroke="none" d="M9 7.8c.3-.1.6 0 .7.3l.8 1.8c.1.3 0 .5-.2.7l-.6.6c.5 1.1 1.5 2.1 2.6 2.6l.6-.6c.2-.2.5-.3.7-.2l1.8.8c.3.1.4.4.3.7-.3 1-1.2 1.6-2.2 1.5-3.2-.4-5.6-2.8-6-6-.1-1 .5-1.9 1.5-2.2z"/></svg></a>
 <script src="assets/js/form-config.js" defer></script>
 <script src="assets/js/main.js" defer></script>
 </body>
