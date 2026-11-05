@@ -53,9 +53,13 @@ one, keep the same transparent 4:3 layout and file names.
 ## Logo and icons
 
 All logo files use the November 2026 swoosh. `BRO-KOREA-Logo-Pack.zip` in the main folder is the
-downloadable pack, regenerated from the same master files. The animated logo
-(`assets/js/logo-anim.js`, `assets/css/logo-anim.css`, `assets/js/vendor/gsap.min.js`) is kept for
-later use; the photo-led homepage doesn't show it.
+downloadable pack, regenerated from the same master files.
+
+The header logo is drawn in the page itself (inline SVG) so it can animate. On the first page of a
+visit a red wave line runs in from the page edge (left in English, right in Arabic), becomes the
+swoosh, and KOREA fades in; every later page in that visit shows the finished logo. It is skipped
+for reduced motion and on narrow screens the logo just draws itself. Code: `assets/js/logo-anim.js`
+(loads `assets/js/vendor/gsap.min.js` only when it plays).
 
 
 These come from the BRO KOREA logo pack:
