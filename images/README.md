@@ -26,8 +26,29 @@ Only use photos you took yourself or have the rights to, and no car brand logos.
 
 ## Parts categories (`images/categories/`)
 
-There are no product photos, so each category uses a simple line drawing (`engine.svg`,
-`brakes.svg` and so on). The pages link to these drawings directly.
+One product image per category, shown on the catalog grid and on each category page. They are
+**representative illustrations**, not photographs of stock: studio-style CGI stills generated
+with an AI image model (GPT Image 2.6 via Higgsfield, November 2026) on transparent
+backgrounds, then placed on one shared 4:3 canvas with the same ground line and the same soft
+contact shadow (key light from the upper left). No brand names, logos or part numbers.
+
+| Category | Files (`images/categories/`) |
+|---|---|
+| Engine parts | `engine-parts-inline-four-engine-*` |
+| Ignition & spark plugs | `ignition-two-spark-plugs-*` |
+| Filters | `filters-oil-air-cabin-*` |
+| Brakes | `brakes-disc-and-caliper-*` |
+| Suspension & steering | `suspension-strut-and-control-arm-*` |
+| Electrical & sensors | `electrical-alternator-and-sensor-*` |
+| Cooling | `cooling-radiator-and-fan-*` |
+| Lighting | `lighting-headlamp-assembly-*` |
+| Body parts | `body-parts-bumper-and-mirror-*` |
+| Transmission | `transmission-gearbox-assembly-*` |
+| Smart keys & remotes | `smart-keys-two-key-fobs-*` |
+
+Each has transparent WebP files at 400, 800 and 1200 px wide (used by browsers), an 800 px PNG
+fallback, and the full 1200 × 900 transparent master in `images/categories/masters/`. To replace
+one, keep the same transparent 4:3 layout and file names.
 
 ## Logo and icons
 
