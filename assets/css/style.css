@@ -276,20 +276,23 @@ html[lang="ar"] .hero-p { line-height: 1.85; }
 /* ---------------------------------------------------------------- categories */
 .cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 40px 28px; }
 .cat-card { display: flex; flex-direction: column; text-decoration: none; color: var(--body); }
-.cat-img { aspect-ratio: 4 / 3; border-radius: 16px; overflow: hidden; background: var(--soft); }
-.cat-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .25s; }
+/* product images are transparent: they sit straight on the page, no panel, no frame */
+.cat-img { aspect-ratio: 4 / 3; }
+.cat-img picture, .cat-img img { display: block; width: 100%; height: 100%; }
+.cat-img img { object-fit: contain; transition: transform .3s; }
 .cat-body { padding-top: 16px; display: flex; flex-direction: column; flex: 1; }
 .cat-body h3 { margin-bottom: .3em; transition: color .15s; }
 .cat-body p { font-size: .9375rem; flex: 1; margin-bottom: .8em; }
 .more { display: inline-flex; align-items: center; gap: 6px; line-height: 1.35; font-weight: var(--semi); color: var(--blue); font-size: .9375rem; }
 .cat-card:hover { color: var(--body); }
 .cat-card:hover h3 { color: var(--blue); }
-.cat-card:hover .cat-img img { transform: scale(1.03); }
+.cat-card:hover .cat-img img { transform: scale(1.025); }
 
 /* category detail */
 .cat-detail { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 64px; align-items: start; }
-.cat-hero-img { border-radius: var(--r-card); overflow: hidden; margin-bottom: 40px; max-width: 560px; aspect-ratio: 4 / 3; background: var(--soft); }
-.cat-hero-img img { width: 100%; height: 100%; object-fit: cover; }
+.cat-hero-img { margin-bottom: 40px; max-width: 560px; aspect-ratio: 4 / 3; }
+.cat-hero-img picture, .cat-hero-img img { display: block; width: 100%; height: 100%; }
+.cat-hero-img img { object-fit: contain; }
 .check-list { margin-top: 8px; }
 .check-list li { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--line); color: var(--ink); }
 .check-list .i { color: var(--blue); margin-top: .3em; }
@@ -469,7 +472,6 @@ a.contact-card:hover .cc-v { color: var(--blue); }
   .steps, .process .steps, .contact-grid, .footer-grid, .grid-2, .choice { grid-template-columns: minmax(0, 1fr); }
   .steps li { padding: 20px 0 24px; }
   .cat-grid { grid-template-columns: 1fr 1fr; gap: 28px 14px; }
-  .cat-img { border-radius: 14px; }
   .cat-body { padding-top: 10px; }
   .cat-body h3 { font-size: 1rem; }
   .cat-body p { display: none; }
