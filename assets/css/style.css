@@ -87,9 +87,9 @@ h1, h2, h3 { font-family: var(--font-h); color: var(--ink); font-weight: 700; ma
 h1 { font-size: clamp(2.25rem, 5.2vw, 3.5rem); line-height: 1.08; letter-spacing: -.025em; }
 h2 { font-size: clamp(1.75rem, 3.4vw, 2.5rem); line-height: 1.15; letter-spacing: -.02em; }
 h3 { font-size: 1.15rem; line-height: 1.35; letter-spacing: -.005em; }
-html[lang="ar"] h1 { font-size: clamp(2rem, 4.6vw, 3.1rem); line-height: 1.45; letter-spacing: 0; }
-html[lang="ar"] h2 { font-size: clamp(1.55rem, 3vw, 2.25rem); line-height: 1.5; letter-spacing: 0; }
-html[lang="ar"] h3 { font-size: 1.1rem; line-height: 1.6; letter-spacing: 0; }
+:where(html[lang="ar"]) h1 {   /* low specificity: component sizes (.side-box h2 …) still win */  font-size: clamp(2rem, 4.6vw, 3.1rem); line-height: 1.45; letter-spacing: 0; }
+:where(html[lang="ar"]) h2 {   /* low specificity: component sizes (.side-box h2 …) still win */  font-size: clamp(1.55rem, 3vw, 2.25rem); line-height: 1.5; letter-spacing: 0; }
+:where(html[lang="ar"]) h3 {   /* low specificity: component sizes (.side-box h2 …) still win */  font-size: 1.1rem; line-height: 1.6; letter-spacing: 0; }
 p { margin: 0 0 1em; }
 ul, ol { padding: 0; margin: 0; list-style: none; }
 figure { margin: 0; }
@@ -116,6 +116,8 @@ figure { margin: 0; }
 .photo { border-radius: var(--r-photo); overflow: hidden; background: var(--soft); }
 .photo picture, .photo img { display: block; width: 100%; height: 100%; }
 .photo img { object-fit: cover; }
+.fig { margin: 0; }
+.fig figcaption { margin-top: 12px; font-size: .875rem; line-height: 1.5; color: var(--label); }
 
 /* ---------------------------------------------------------------- buttons */
 .btn {
@@ -156,7 +158,7 @@ html[lang="ar"] .nav a { font-size: 1.05rem; }
 .nav a:hover { background: var(--soft); color: var(--ink); }
 .nav a[aria-current="page"] { color: var(--blue); box-shadow: inset 0 -2px 0 var(--blue); border-radius: 0; }
 .header-actions { display: flex; align-items: center; gap: 10px; }
-.lang-switch { font-weight: var(--semi); font-size: .9375rem; text-decoration: none; padding: 7px 12px; border: 1px solid var(--line-2); border-radius: 99px; color: var(--ink); line-height: 1.3; }
+.lang-switch { display: inline-flex; align-items: center; min-height: 40px; font-weight: var(--semi); font-size: .9375rem; text-decoration: none; padding: 7px 12px; border: 1px solid var(--line-2); border-radius: 99px; color: var(--ink); line-height: 1.3; }
 .lang-switch:hover { border-color: var(--blue); color: var(--blue); }
 /* the Arabic link on English pages uses system Arabic so that one word doesn't load a 49 KB font */
 .lang-switch[lang="ar"] { font-family: "Segoe UI", Tahoma, "Geeza Pro", system-ui, sans-serif; }   /* no web-font family named here */
@@ -229,7 +231,8 @@ html[lang="ar"] .label { letter-spacing: 0; text-transform: none; font-size: .95
   grid-template-areas: ". photo" "text photo" "note photo" ". photo"; grid-template-rows: 1fr auto auto 1fr;
 }
 .hero-text { grid-area: text; }
-.hero-photo { grid-area: photo; aspect-ratio: 3 / 2; align-self: center; }
+.hero-photo { grid-area: photo; align-self: center; }
+.hero-photo .photo { aspect-ratio: 3 / 2; }
 .hero-note { grid-area: note; }
 .hero h1 { max-width: 11em; }
 .hero-p { font-size: 1.1875rem; line-height: 1.65; max-width: 32em; margin: 0; }
@@ -240,7 +243,8 @@ html[lang="ar"] .hero-p { line-height: 1.85; }
 }
 @media (max-width: 960px) {
   .hero-in { grid-template-columns: minmax(0, 1fr); grid-template-areas: "text" "photo" "note"; grid-template-rows: none; }
-  .hero-photo { margin-top: 40px; aspect-ratio: 4 / 3; }
+  .hero-photo { margin-top: 40px; }
+  .hero-photo .photo { aspect-ratio: 4 / 3; }
   .hero-note { margin-top: 24px; }
 }
 
@@ -258,12 +262,12 @@ html[lang="ar"] .hero-p { line-height: 1.85; }
 .steps p { margin: 0; font-size: 1rem; }
 .process { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 360px); gap: 56px; align-items: start; margin-top: 48px; }
 .process .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.process-photo { aspect-ratio: 4 / 5; }
+.process-photo .photo { aspect-ratio: 4 / 5; }
 .process-tall { margin-top: 0; grid-template-columns: minmax(0, 1fr) minmax(0, 400px); }
 
 /* ---------------------------------------------------------------- operation + trust */
 .ops { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(40px, 6vw, 88px); align-items: center; }
-.ops-photo { aspect-ratio: 3 / 2; }
+.ops-photo .photo { aspect-ratio: 3 / 2; }
 .trust-list { margin-top: 32px; }
 .trust-list li { display: flex; gap: 14px; align-items: flex-start; padding: 14px 0; border-top: 1px solid var(--line); color: var(--ink); }
 .trust-list li:last-child { border-bottom: 1px solid var(--line); }
@@ -298,6 +302,8 @@ html[lang="ar"] .hero-p { line-height: 1.85; }
 .pill-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
 .pill-links a { display: block; padding: 9px 18px; background: var(--surface); border: 1px solid var(--line-2); border-radius: 99px; text-decoration: none; color: var(--ink); }
 .pill-links a:hover { border-color: var(--blue); color: var(--blue); }
+.cat-pills { margin: 32px 0 0; max-width: 60em; }
+.cat-pills a { padding: 10px 20px; font-weight: var(--semi); }
 
 /* ---------------------------------------------------------------- brands */
 .brand-chips { display: flex; flex-wrap: wrap; gap: 10px; margin: 28px 0 20px; }
@@ -321,7 +327,8 @@ html[lang="ar"] .hero-p { line-height: 1.85; }
 .faq details p { margin-top: -4px; padding-bottom: 6px; }
 
 /* ---------------------------------------------------------------- about */
-.about-photo { aspect-ratio: 5 / 4; margin-bottom: 40px; }
+.about-photo { margin-bottom: 40px; }
+.about-photo .photo { aspect-ratio: 5 / 4; }
 .facts { width: 100%; border-collapse: collapse; margin-top: 8px; }
 .facts th, .facts td { text-align: start; padding-block: 14px; padding-inline: 0 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
 .facts tr:first-child th, .facts tr:first-child td { border-top: 1px solid var(--line); }
@@ -449,9 +456,10 @@ a.contact-card:hover .cc-v { color: var(--blue); }
   .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .process, .process-tall { grid-template-columns: minmax(0, 1fr); gap: 32px; }
   .process-photo { max-width: 300px; }
-  .process-tall .process-photo { max-width: none; aspect-ratio: 1 / 1; }
+  .process-tall .process-photo { max-width: none; }
+  .process-tall .process-photo .photo { aspect-ratio: 1 / 1; }
   .ops { grid-template-columns: minmax(0, 1fr); gap: 40px; }
-  .ops-photo { aspect-ratio: 4 / 3; }
+  .ops-photo .photo { aspect-ratio: 4 / 3; }
   .contact-grid { grid-template-columns: 1fr 1fr; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .cta-box, .quote-side { position: static; }

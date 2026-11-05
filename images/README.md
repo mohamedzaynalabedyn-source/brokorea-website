@@ -14,8 +14,9 @@ The five company photographs are used as cropped web copies. The untouched origi
 | About page | `6100418732762008904_121.jpg` (warehouse interior) | `warehouse-interior-*` (5:4) |
 
 Each web file exists as `.webp` (used by modern browsers) and `.jpg` (fallback), in two widths;
-the number in the name is the width in pixels. The photos are only cropped: no retouching, no text
-and nothing placed on top of them.
+the number in the name is the width in pixels. The photos are cropped, and the darker ones have a
+mild exposure lift (midtones only). Nothing is added, removed or placed on top of them; each photo
+has a short factual caption below it on the page.
 
 To replace a photo, keep the same crop shape (3:2, 4:3, 4:5, 1:1 or 5:4) and upload new files with
 exactly the same names and widths, in both `.webp` and `.jpg`. If that's awkward, send the new photo
@@ -29,6 +30,12 @@ There are no product photos, so each category uses a simple line drawing (`engin
 `brakes.svg` and so on). The pages link to these drawings directly.
 
 ## Logo and icons
+
+All logo files use the November 2026 swoosh. `BRO-KOREA-Logo-Pack.zip` in the main folder is the
+downloadable pack, regenerated from the same master files. The animated logo
+(`assets/js/logo-anim.js`, `assets/css/logo-anim.css`, `assets/js/vendor/gsap.min.js`) is kept for
+later use; the photo-led homepage doesn't show it.
+
 
 These come from the BRO KOREA logo pack:
 - `images/logo.svg` is the header logo. `images/logo-white.svg` is the footer logo on the dark

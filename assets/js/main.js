@@ -13,6 +13,8 @@
       btn.setAttribute("aria-expanded", open ? "true" : "false");
       if (btnLabel) btnLabel.textContent = open ? btn.dataset.labelClose : btn.dataset.labelOpen;
       if (!open && returnFocus) btn.focus();
+      // the links come before the button in the page, so move focus into the menu when it opens
+      if (open) { var first = nav.querySelector("a"); if (first) first.focus(); }
     };
     var isOpen = function () { return btn.getAttribute("aria-expanded") === "true"; };
     btn.addEventListener("click", function () { setMenu(!isOpen(), false); });
@@ -253,6 +255,7 @@
     add(L.name, val("name"));
     add(L.company, val("Company"));
     add(L.country, val("Country"));
+    add(L.destination, val("Destination"));
     add(L.email, val("email"));
     if (typeSlug() === "parts") add(L.category, text(form.elements["Category"]));
     add(L.vehicle, [val("Car make"), val("Model"), val("Year")].filter(Boolean).join(" "));
