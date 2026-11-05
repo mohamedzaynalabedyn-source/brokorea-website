@@ -150,7 +150,13 @@ figure { margin: 0; }
 .site-header { position: sticky; top: 0; z-index: 50; background: rgba(255, 255, 255, .97); border-bottom: 1px solid var(--line); }
 .header-in { display: flex; align-items: center; gap: 20px; min-height: 80px; }
 .brand { display: flex; align-items: center; flex: none; padding: 6px 0; }
-.brand img { height: 60px; width: auto; }
+.brand .logo-anim { display: block; height: 60px; width: auto; aspect-ratio: 1120 / 730.77; direction: ltr; }   /* never mirrored */
+/* animated logo (assets/js/logo-anim.js): the swoosh is two filled shapes revealed by mask strokes */
+.logo-anim .swoosh-draw { fill: none; stroke: #fff; stroke-linecap: round; stroke-linejoin: round; }
+.logo-anim .swoosh-draw[data-lead="0"] { stroke-linecap: butt; }
+.logo-intro .logo-anim .swoosh-draw { stroke-dasharray: 2000; stroke-dashoffset: 2000; }   /* first page of a visit: hidden until drawn */
+.logo-intro .logo-anim .korea { opacity: 0; }
+.logo-wave { position: absolute; left: 0; top: 0; z-index: -1; pointer-events: none; overflow: visible; }   /* run-in line: above the header background, behind its content */
 .nav { margin-inline-start: auto; }
 .nav ul { display: flex; gap: 2px; }
 .nav a { display: block; padding: 8px 12px; border-radius: 8px; text-decoration: none; color: var(--ink); font-size: .9875rem; }
@@ -175,7 +181,7 @@ html[lang="ar"] .nav a { font-size: 1.05rem; }
 
 @media (max-width: 1080px) {
   .header-in { min-height: 64px; }
-  .brand img { height: 46px; }
+  .brand .logo-anim { height: 46px; }
   .menu-btn { display: block; }
   .header-actions { margin-inline-start: auto; }
   .nav { position: absolute; top: 100%; left: 0; right: 0; background: #fff; border-bottom: 1px solid var(--line);
@@ -198,7 +204,7 @@ html[lang="ar"] .nav a { font-size: 1.05rem; }
 }
 @media (max-width: 370px) {
   .wrap { padding: 0 16px; }
-  .brand img { height: 40px; }
+  .brand .logo-anim { height: 40px; }
 }
 
 /* ---------------------------------------------------------------- section rhythm */
