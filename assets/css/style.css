@@ -280,19 +280,54 @@ html[lang="ar"] .hero-p { line-height: 1.85; }
 .trust-list .i { color: var(--blue); margin-top: .3em; }
 
 /* ---------------------------------------------------------------- categories */
-.cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 40px 28px; }
+.cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 24px; }
 .cat-card { display: flex; flex-direction: column; text-decoration: none; color: var(--body); }
-/* product images are transparent: they sit straight on the page, no panel, no frame */
+/* product images are transparent: they sit straight on the card, no inner panel */
 .cat-img { aspect-ratio: 4 / 3; }
 .cat-img picture, .cat-img img { display: block; width: 100%; height: 100%; }
-.cat-img img { object-fit: contain; transition: transform .3s; }
-.cat-body { padding-top: 16px; display: flex; flex-direction: column; flex: 1; }
-.cat-body h3 { margin-bottom: .3em; transition: color .15s; }
+.cat-img img { object-fit: contain; }
+.cat-body { padding-top: 14px; display: flex; flex-direction: column; flex: 1; }
+.cat-body h3 { margin-bottom: .3em; transition: color .2s ease; }
 .cat-body p { font-size: .9375rem; flex: 1; margin-bottom: .8em; }
 .more { display: inline-flex; align-items: center; gap: 6px; line-height: 1.35; font-weight: var(--semi); color: var(--blue); font-size: .9375rem; }
 .cat-card:hover { color: var(--body); }
 .cat-card:hover h3 { color: var(--blue); }
-.cat-card:hover .cat-img img { transform: scale(1.025); }
+
+/* Catalogue cards: restrained "architectural glass". Only the card surface is translucent;
+   the product image and text stay fully opaque. Works the same without backdrop blur. */
+.cat-grid .cat-card {
+  position: relative; isolation: isolate;
+  padding: 16px 18px 18px; border-radius: 20px;
+  border: 1px solid rgba(15, 61, 104, .12);
+  background: linear-gradient(180deg, rgba(255, 255, 255, .86) 0%, rgba(246, 249, 252, .74) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .95), 0 1px 2px rgba(17, 32, 52, .05), 0 16px 32px -20px rgba(15, 61, 104, .34);
+  -webkit-backdrop-filter: blur(8px) saturate(115%); backdrop-filter: blur(8px) saturate(115%);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.cat-grid .cat-card::before {          /* soft highlight near the top, behind the content */
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .75) 0%, rgba(255, 255, 255, 0) 34%);
+}
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .cat-grid .cat-card { background: linear-gradient(180deg, rgba(255, 255, 255, .95) 0%, rgba(246, 249, 252, .88) 100%); }
+}
+.cat-grid .more { margin-top: auto; }                 /* links line up at the foot of each row */
+.cat-grid .more .i { transition: transform .2s ease; }
+.cat-grid .cat-card:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; border-radius: 20px; border-color: rgba(15, 61, 104, .28); }
+@media (hover: hover) and (pointer: fine) {
+  .cat-grid .cat-card:hover {
+    transform: translateY(-2.5px);
+    border-color: rgba(15, 61, 104, .24);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 2px 4px rgba(17, 32, 52, .05), 0 20px 36px -20px rgba(15, 61, 104, .40);
+  }
+  .cat-grid .cat-card:hover .more .i { transform: translateX(3px); }
+  [dir="rtl"] .cat-grid .cat-card:hover .more .i { transform: translateX(-3px) scaleX(-1); }
+}
+@media (prefers-reduced-motion: reduce) {       /* feedback stays (border, shadow, title colour); movement goes */
+  .cat-grid .cat-card:hover { transform: none; }
+  .cat-grid .cat-card:hover .more .i { transform: none; }
+  [dir="rtl"] .cat-grid .cat-card:hover .more .i { transform: scaleX(-1); }
+}
 
 /* category detail */
 .cat-detail { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 64px; align-items: start; }
@@ -477,7 +512,8 @@ a.contact-card:hover .cc-v { color: var(--blue); }
 @media (max-width: 560px) {
   .steps, .process .steps, .contact-grid, .footer-grid, .grid-2, .choice { grid-template-columns: minmax(0, 1fr); }
   .steps li { padding: 20px 0 24px; }
-  .cat-grid { grid-template-columns: 1fr 1fr; gap: 28px 14px; }
+  .cat-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+  .cat-grid .cat-card, .cat-grid .cat-card:focus-visible { padding: 10px 12px 14px; border-radius: 18px; }
   .cat-body { padding-top: 10px; }
   .cat-body h3 { font-size: 1rem; }
   .cat-body p { display: none; }
