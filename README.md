@@ -81,6 +81,24 @@ form has an **"Email my Excel / PDF list"** button, which opens the buyer's emai
 subject line already filled in. Until the key is added, the form tells visitors to email or
 WhatsApp you instead, so no request is lost.
 
+### 6. Turn on spam protection (hCaptcha, free)
+The form has a hidden "honeypot" trap, but it only works inside the browser. Bots that send straight
+to Web3Forms skip it. Web3Forms checks hCaptcha on its own servers, so hCaptcha stops those bots as well.
+**Follow these steps in this order, otherwise the form stops accepting requests.**
+
+1. In `assets/js/form-config.js`, change `hcaptcha: false` to `hcaptcha: true` and commit. Wait about
+   2 minutes. A security check should now appear above the send button on
+   https://brokorea.com/quote.html and https://brokorea.com/ar/quote.html.
+2. From the English form, complete the check and send one test request. Make sure it arrives at
+   info@brokorea.com.
+3. Wait at least 10 minutes after step 1, because browsers can keep the old form for up to 10 minutes.
+   Then log in at https://app.web3forms.com and open the form for info@brokorea.com. Choose **hCaptcha**
+   as the spam protection (the "Block spam" / captcha setting), then save.
+4. From the Arabic form, send one more test request and make sure it arrives.
+
+To turn it off again, use the reverse order. First switch hCaptcha off in the Web3Forms dashboard, then
+set `hcaptcha: false` and commit.
+
 ## Editing text later
 Each page is a normal `.html` file (English in the main folder, Arabic in `ar/`). Open the file
 on GitHub, click the pencil icon, change the text and commit. Remember to update both languages.

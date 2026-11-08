@@ -450,6 +450,9 @@ a.contact-card:hover .cc-v { color: var(--blue); }
 .photo-note .i { color: var(--blue); margin-top: .2em; }
 .reach { display: grid; gap: 14px; }
 .form-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding-top: 8px; }
+.captcha-field { display: grid; justify-items: start; gap: 10px; margin: 0 0 16px; }
+.captcha-field:focus { outline: 0; }
+#f-captcha-box { min-height: 78px; max-width: 100%; }
 .form-foot p { margin: 0; }
 .form-status { margin-top: 20px; padding: 14px 18px; border-radius: var(--r-ctl); background: #fdf1f0; color: #7a1b14; }
 .form-status.ok { background: #ecf6ef; color: #14532d; }
