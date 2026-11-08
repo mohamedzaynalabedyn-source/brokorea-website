@@ -100,5 +100,9 @@ To turn it off again, use the reverse order. First switch hCaptcha off in the We
 set `hcaptcha: false` and commit.
 
 ## Editing text later
-Each page is a normal `.html` file (English in the main folder, Arabic in `ar/`). Open the file
-on GitHub, click the pencil icon, change the text and commit. Remember to update both languages.
+The pages are generated from the files in `generator/`: the text is in `generator/content.py` and the
+page layouts are in `generator/build.py`. Change the text there and run `python3 generator/build.py`,
+then commit the generator change together with the updated pages. See
+[`generator/README.md`](generator/README.md). If you edit an `.html` file directly on GitHub, make the
+same change in `generator/content.py`, or the next run of the generator will undo it. Remember to update
+both languages (English in the main folder, Arabic in `ar/`).

@@ -1,0 +1,3 @@
+# Python bytecode created when the site generator runs
+__pycache__/
+*.pyc
