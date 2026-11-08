@@ -82,22 +82,67 @@ subject line already filled in. Until the key is added, the form tells visitors 
 WhatsApp you instead, so no request is lost.
 
 ### 6. Turn on spam protection (hCaptcha, free)
-The form has a hidden "honeypot" trap, but it only works inside the browser. Bots that send straight
-to Web3Forms skip it. Web3Forms checks hCaptcha on its own servers, so hCaptcha stops those bots as well.
-**Follow these steps in this order, otherwise the form stops accepting requests.**
+Today the form has two layers of spam protection. Web3Forms runs its own spam filter on its servers,
+and the form has a hidden "honeypot" trap that only works inside the browser. hCaptcha adds a check
+that a person filled in the form. According to the Web3Forms documentation, its servers verify that check
+once it is enabled in the dashboard. Tests 4 and 5 below confirm this. The website code for it is ready but
+switched off (`hcaptcha: false` in `assets/js/form-config.js`).
 
-1. In `assets/js/form-config.js`, change `hcaptcha: false` to `hcaptcha: true` and commit. Wait about
-   2 minutes. A security check should now appear above the send button on
-   https://brokorea.com/quote.html and https://brokorea.com/ar/quote.html.
-2. From the English form, complete the check and send one test request. Make sure it arrives at
-   info@brokorea.com.
-3. Wait at least 10 minutes after step 1, because browsers can keep the old form for up to 10 minutes.
-   Then log in at https://app.web3forms.com and open the form for info@brokorea.com. Choose **hCaptcha**
-   as the spam protection (the "Block spam" / captcha setting), then save.
-4. From the Arabic form, send one more test request and make sure it arrives.
+Follow the stages in this order. **Real submissions** are marked: each one sends a request to
+Web3Forms. Put "TEST" in the name so you can recognise them in info@brokorea.com.
 
-To turn it off again, use the reverse order. First switch hCaptcha off in the Web3Forms dashboard, then
-set `hcaptcha: false` and commit.
+**Stage A: publish the security changes (hCaptcha stays off)**
+1. Merge the security changes. GitHub Pages publishes them in about 2 minutes.
+2. Open https://brokorea.com and https://brokorea.com/ar/ and check that the site looks and works as before.
+3. **Real submission 1:** send the English form with the name "TEST 1". Expect the thank-you page and an
+   email at info@brokorea.com.
+
+**Stage B: switch hCaptcha on in the website (the Web3Forms dashboard is still off)**
+4. In `assets/js/form-config.js`, change `hcaptcha: false` to `hcaptcha: true` and commit. Wait about 2 minutes.
+5. Open the English and Arabic quote pages in a private window. An "I am human" check should appear above the
+   send button.
+6. Missing-check test (nothing is sent): fill in the form and press send without ticking the check. Expect
+   "Please complete the security check before sending." (in Arabic on the Arabic page).
+7. Expired-check test (nothing is sent): tick the check, wait 3 minutes without sending, and expect
+   "The security check expired. Please complete it again." Then press send: it is blocked.
+8. **Real submission 2:** tick the check and send the English form with the name "TEST 2". Expect the
+   thank-you page and an email. This shows the form still delivers when it includes the check.
+
+**Stage C: enforce hCaptcha in Web3Forms (at least 10 minutes after step 4)**
+Browsers can keep the old form for up to 10 minutes, so wait before this stage.
+9. Log in at https://app.web3forms.com and open the form for info@brokorea.com. Choose **hCaptcha** as the
+   spam protection (the "Block spam" / captcha setting), then save.
+10. **Real submission 3:** on the Arabic form, tick the check and send with the name "TEST 3". Expect the
+    thank-you page and an email: a valid check is accepted.
+11. **Server test 4, missing check (should be rejected):** on https://brokorea.com/quote.html open the browser
+    console (Chrome: right-click → Inspect → Console; you may have to type `allow pasting` first). Paste this
+    and press Enter:
+    ```js
+    fetch("https://api.web3forms.com/submit", {method: "POST", headers: {"Content-Type": "application/json", "Accept": "application/json"}, body: JSON.stringify(Object.assign({access_key: BROKOREA_FORM.web3formsAccessKey, name: "Security test", email: "info@brokorea.com", "Form language": "English", "Parts list": "Server-side CAPTCHA test. This message should NOT arrive."}, {subject: "TEST - missing captcha token - please ignore"}))}).then(function (r) { return r.json(); }).then(function (j) { console.log("RESULT: success = " + j.success + " | " + j.message); }).catch(function (e) { console.log("RESULT: request failed: " + e); });
+    ```
+    Expect `RESULT: success = false` and **no** email. If you see `success = true`, or an email arrives,
+    enforcement is not working. Check the setting from step 9, and contact Web3Forms support if it still fails.
+12. **Server test 5, expired check (should be rejected):** reload the page, tick the check, then paste:
+    ```js
+    window.bkTestToken = document.querySelector('[name="h-captcha-response"]').value; console.log(window.bkTestToken ? "Token saved. Wait at least 3 minutes, then run step 2." : "Complete the I am human check first.");
+    ```
+    Wait at least 3 minutes, then paste:
+    ```js
+    fetch("https://api.web3forms.com/submit", {method: "POST", headers: {"Content-Type": "application/json", "Accept": "application/json"}, body: JSON.stringify(Object.assign({access_key: BROKOREA_FORM.web3formsAccessKey, name: "Security test", email: "info@brokorea.com", "Form language": "English", "Parts list": "Server-side CAPTCHA test. This message should NOT arrive."}, {subject: "TEST - expired captcha token - please ignore", "h-captcha-response": window.bkTestToken}))}).then(function (r) { return r.json(); }).then(function (j) { console.log("RESULT: success = " + j.success + " | " + j.message); }).catch(function (e) { console.log("RESULT: request failed: " + e); });
+    ```
+    Expect `RESULT: success = false` and **no** email.
+
+Real submissions 1–3 should each deliver one email. Tests 4 and 5 should deliver nothing.
+
+**Turning it off or rolling back**
+- If real enquiries fail after step 9: first switch hCaptcha **off in the Web3Forms dashboard**. This takes
+  effect immediately. Then set `hcaptcha: false` and commit. Never do it the other way round, or the live form
+  rejects every request until both are off.
+- If the check does not appear in step 5: set `hcaptcha: false` again. The dashboard is still off, so nothing
+  else is affected.
+- If the site misbehaves after stage A: on GitHub, open the merged pull request, click **Revert** and merge
+  the revert pull request. The site returns to the previous version in about 2 minutes. If hCaptcha is on in the
+  Web3Forms dashboard at that point, switch it off there first.
 
 ## Editing text later
 The pages are generated from the files in `generator/`: the text is in `generator/content.py` and the
