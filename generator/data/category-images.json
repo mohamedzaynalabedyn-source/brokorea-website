@@ -1,0 +1,13 @@
+{
+ "engine": "engine-parts-inline-four-engine",
+ "ignition": "ignition-two-spark-plugs",
+ "filters": "filters-oil-air-cabin",
+ "brakes": "brakes-disc-and-caliper",
+ "suspension": "suspension-strut-and-control-arm",
+ "electrical": "electrical-alternator-and-sensor",
+ "cooling": "cooling-radiator-and-fan",
+ "lighting": "lighting-headlamp-assembly",
+ "body": "body-parts-bumper-and-mirror",
+ "transmission": "transmission-gearbox-assembly",
+ "keys": "smart-keys-two-key-fobs"
+}

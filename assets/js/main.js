@@ -294,6 +294,84 @@
     status.classList.toggle("ok", !!ok);
   }
 
+  // ---- optional hCaptcha check (free with Web3Forms), switched on in assets/js/form-config.js.
+  // Web3Forms itself rejects requests without a valid token once hCaptcha is enabled in its
+  // dashboard; this code shows the check, sends its one-time token and explains problems in the
+  // page's language. Without the switch nothing here runs and the form works as before.
+  var cfg = window.BROKOREA_FORM || {};
+  var HCAPTCHA_SITEKEY = cfg.hcaptchaSitekey || "50b2fe65-b00b-4b9e-ad62-3ba471098be2"; // Web3Forms free-plan key
+  var captcha = cfg.hcaptcha === true ? setupCaptcha() : null;
+
+  function setupCaptcha() {
+    var wrap = document.getElementById("f-captcha");
+    var box = document.getElementById("f-captcha-box");
+    var err = document.getElementById("f-captcha-error");
+    var retry = document.getElementById("f-captcha-retry");
+    if (!wrap || !box || !err || !retry) return null;
+    var lang = form.dataset.lang === "ar" ? "ar" : "en";
+    var c = { token: "", state: "loading", widget: null, wrap: wrap };
+    var timer = null, pending = null;
+
+    c.say = function (msg, offerRetry) {
+      err.textContent = msg || "";
+      err.hidden = !msg;
+      retry.hidden = !offerRetry;
+    };
+    function unavailable() {
+      clearTimeout(timer);
+      c.state = "unavailable";
+      c.token = "";
+      c.say(form.dataset.msgCaptchaUnavailable, true);
+    }
+    function render() {
+      clearTimeout(timer);
+      pending = null;
+      try {
+        if (c.widget === null) {
+          c.widget = window.hcaptcha.render(box, {
+            sitekey: HCAPTCHA_SITEKEY,
+            hl: lang,
+            size: wrap.clientWidth && wrap.clientWidth < 304 ? "compact" : "normal",   // 303 px widget
+            callback: function (token) { c.token = token; c.state = "ready"; c.say(""); },
+            "expired-callback": function () { c.token = ""; c.say(form.dataset.msgCaptchaExpired); },
+            "chalexpired-callback": function () { c.token = ""; c.say(form.dataset.msgCaptchaExpired); },
+            "error-callback": function () { c.token = ""; c.state = "error"; c.say(form.dataset.msgCaptchaUnavailable, true); }
+          });
+        }
+        c.state = "ready";
+        c.say("");
+      } catch (e) { unavailable(); }
+    }
+    function load() {
+      c.state = "loading";
+      c.say("");
+      clearTimeout(timer);
+      timer = setTimeout(unavailable, 15000);   // slow or blocked: explain, offer a retry and email/WhatsApp
+      if (pending) return;                       // still downloading: wait for it rather than load twice
+      window.bkHcaptchaLoaded = render;
+      pending = document.createElement("script");
+      pending.src = "https://js.hcaptcha.com/1/api.js?render=explicit&recaptchacompat=off&onload=bkHcaptchaLoaded&hl=" + lang;
+      pending.async = true;
+      pending.onerror = function () { if (pending) pending.remove(); pending = null; unavailable(); };
+      document.head.appendChild(pending);
+    }
+    // a used or expired token cannot be sent again, so every retry starts a fresh check
+    c.reset = function () {
+      c.token = "";
+      if (window.hcaptcha && c.widget !== null) {
+        try { window.hcaptcha.reset(c.widget); c.state = "ready"; } catch (e) { unavailable(); }
+      }
+    };
+    retry.addEventListener("click", function () {
+      c.say("");
+      if (window.hcaptcha && window.hcaptcha.render) { if (c.widget === null) render(); else c.reset(); }
+      else load();
+    });
+    wrap.hidden = false;
+    load();
+    return c;
+  }
+
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     var bad = validate();
@@ -309,6 +387,14 @@
     }
     if (form.elements.botcheck.checked) return;
 
+    if (captcha && !captcha.token) {
+      status.hidden = true;
+      var broken = captcha.state === "unavailable" || captcha.state === "error";
+      captcha.say(broken ? form.dataset.msgCaptchaUnavailable : form.dataset.errCaptcha, broken);
+      captcha.wrap.focus();
+      return;
+    }
+
     form.elements.access_key.value = key;
     var who = val("Company") || val("name");
     form.elements.subject.value = "Quote request – " + SUBJECT_KIND[mode()] + " – " + who +
@@ -318,6 +404,9 @@
     new FormData(form).forEach(function (v, k) { if (k !== "botcheck" && k !== "redirect") data[k] = v; });
     if (!data.email) delete data.email;       // email is optional when WhatsApp is given
     if (!data.WhatsApp) delete data.WhatsApp; // and the other way round
+    delete data["g-recaptcha-response"];
+    if (captcha) data["h-captcha-response"] = captcha.token;
+    else delete data["h-captcha-response"];
 
     submit.disabled = true;
     show(form.dataset.msgSending, true);
@@ -337,6 +426,7 @@
       })
       .catch(function () {
         submit.disabled = false;
+        if (captcha) captcha.reset();
         show(form.dataset.msgError);
       });
   });

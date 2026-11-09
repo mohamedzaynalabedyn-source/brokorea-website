@@ -2,6 +2,8 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-laCZLOQWW8BSP2at8po98ZbmlKWaOUoQSTuXVkpAxYk=' https://hcaptcha.com https://*.hcaptcha.com; style-src 'self' https://hcaptcha.com https://*.hcaptcha.com; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com https://hcaptcha.com https://*.hcaptcha.com; frame-src https://hcaptcha.com https://*.hcaptcha.com; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>(function(){try{var d=document.documentElement,k="bk-logo-intro";if(sessionStorage.getItem(k)||matchMedia("(prefers-reduced-motion: reduce)").matches)return;sessionStorage.setItem(k,"1");d.classList.add("logo-intro");window.BK_LOGO_INTRO=setTimeout(function(){d.classList.remove("logo-intro")},3000)}catch(e){}})();</script>
 <title>Request a Quote – Vehicles, Automotive Parts &amp; Export Support | BRO KOREA</title>
@@ -74,7 +76,9 @@
       data-thanks="thank-you.html" data-lang="en"
       data-msg-sending="Sending…" data-msg-error="Sorry, your request could not be sent. Please email your list to info@brokorea.com or message us on WhatsApp." data-msg-config="The online form is not active yet. Please email your list to info@brokorea.com or message us on WhatsApp."
       data-err-required="Please fill in this field." data-err-reach="Add a WhatsApp number or an email address so we can reply."
-      data-err-email="Check the email address, for example name@company.com." data-err-vehicle="Add the VIN, or the make, model and year.">
+      data-err-email="Check the email address, for example name@company.com." data-err-vehicle="Add the VIN, or the make, model and year."
+      data-err-captcha="Please complete the security check before sending." data-msg-captcha-expired="The security check expired. Please complete it again."
+      data-msg-captcha-unavailable="The security check could not load. Check your connection and try again, or email info@brokorea.com or message us on WhatsApp.">
       <input type="hidden" name="access_key" value="">
       <input type="hidden" name="subject" value="New quote request – brokorea.com">
       <input type="hidden" name="from_name" value="BRO KOREA website">
@@ -133,6 +137,12 @@ NGK spark plug (engine code G4FC)  x 400" aria-describedby="f-list-help"></texta
         </div>
         <datalist id="countries"><option value="Iraq"><option value="United Arab Emirates"><option value="Saudi Arabia"><option value="Kuwait"><option value="Oman"><option value="Qatar"><option value="Bahrain"><option value="Jordan"><option value="Lebanon"><option value="Syria"><option value="Yemen"><option value="Libya"><option value="Egypt"></datalist>
       </fieldset>
+
+      <div class="captcha-field" id="f-captcha" role="group" aria-label="Security check" aria-describedby="f-captcha-error" tabindex="-1" hidden>
+        <div id="f-captcha-box"></div>
+        <p class="field-error" id="f-captcha-error" aria-live="polite" hidden></p>
+        <button class="btn btn-outline" type="button" id="f-captcha-retry" hidden>Try again</button>
+      </div>
 
       <div class="form-foot">
         <button class="btn btn-primary btn-lg" type="submit">Send quote request</button>
