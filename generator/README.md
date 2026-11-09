@@ -6,7 +6,8 @@ the result, and commit the generator change together with the regenerated pages.
 | File | What it is |
 |---|---|
 | `content.py` | All English and Arabic text: navigation, pages, catalogue categories, form labels and messages. |
-| `build.py` | Page templates. Writes every page in the main folder and `ar/`, plus `404.html`, `sitemap.xml`, `robots.txt`, `CNAME` and `.nojekyll`. It also sets each page's Content Security Policy (see `csp()`). |
+| `build.py` | Page templates. Writes every page in the main folder and `ar/`, plus `404.html`, `sitemap.xml`, `robots.txt` and `CNAME`. It also sets each page's Content Security Policy (see `csp()`), then runs `site_files.py`. |
+| `site_files.py` | Checks which files the website needs (by following every link, image, script and font reference) against what GitHub Pages will publish under `../_config.yml`. Reports anything needed but not published, or published but not needed. |
 | `data/photos.json` | Sizes of the photo files in `images/photos/`. `photos.py` writes this file. |
 | `data/category-images.json` | Which image belongs to which catalogue category. |
 | `photos.py`, `tone.py` | Rebuild the photo crops and sizes from the untouched originals in `images/photos/original/`. Only needed if photos change. |
@@ -36,6 +37,15 @@ Edit English and Arabic together. Arabic pages are right-to-left.
 
 Running the generator on an unchanged repository must change nothing. If `git status` shows changes
 you didn't make, stop and check them before committing.
+
+## What gets published
+
+GitHub Pages builds this repository with Jekyll, only so that `_config.yml` can keep files off the website.
+The generator, the READMEs, the original photos, the full-size image masters and the logo pack stay in the
+repository but are not published. Files starting with `.` or `_` are never published. The HTML pages have no
+front matter, so Jekyll copies them byte for byte. After adding or removing a file, run
+`python3 generator/site_files.py`. If it reports a file that is published but not needed, add the file to
+`exclude` in `_config.yml`. Never add a `.nojekyll` file: it would publish everything again.
 
 ## Things to keep
 

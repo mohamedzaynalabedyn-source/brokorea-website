@@ -1,0 +1,19 @@
+# GitHub Pages publishes this repository with Jekyll. Jekyll is used only to leave out files that are
+# not part of the website. The pages themselves are written by generator/build.py; they have no
+# front matter, so Jekyll copies them unchanged. Files and folders starting with "." or "_" are never
+# published.
+#
+# No theme: GitHub Pages would otherwise add its default theme (jekyll-theme-primer), whose
+# assets/css/style.scss would be built into assets/css/style.css and replace the site's stylesheet.
+theme: null
+
+# Everything listed here stays in the repository but is not published on brokorea.com.
+# Check after any change: python3 generator/site_files.py
+exclude:
+  - generator/                  # page generator, image tools, their data and notes
+  - README.md                   # owner instructions
+  - images/README.md            # notes on the photos and category images
+  - images/photos/original/     # unedited source photos (the site uses resized copies)
+  - images/categories/masters/  # full-size category image masters (the site uses resized copies)
+  - images/logo.svg             # read by the generator; the pages carry the logo inline
+  - BRO-KOREA-Logo-Pack.zip     # brand asset pack; no page links to it

@@ -1,5 +1,6 @@
 """BRO KOREA site generator: writes every HTML page (English and Arabic), the 404 page, sitemap.xml,
-robots.txt, CNAME and .nojekyll from content.py and data/. Run from anywhere: python3 generator/build.py
+robots.txt and CNAME from content.py and data/, then checks which files GitHub Pages will publish
+(generator/site_files.py). Run from anywhere: python3 generator/build.py
 See generator/README.md."""
 import os, sys, json, math, html, urllib.parse
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -863,8 +864,12 @@ def main():
     write("sitemap.xml", sitemap())
     write("robots.txt", f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n")
     write("CNAME", "brokorea.com\n")
-    write(".nojekyll", "")
+    # No .nojekyll: GitHub Pages builds with Jekyll so that _config.yml can keep the generator,
+    # notes and source images off the website. Jekyll copies these pages unchanged.
 
 
 if __name__ == "__main__":
     main()
+    import site_files
+    if not site_files.check():
+        sys.exit("site_files: the published file set needs attention (see above)")
